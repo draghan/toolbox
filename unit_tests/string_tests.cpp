@@ -23,15 +23,15 @@
 */
 
 #include "../external/Catch2/single_include/catch2/catch.hpp"
+#include "../src/toolbox/string/remove.hpp"
 
-#include <toolbox/string/remove.hpp>
 
-TEST_CASE("String: remove character from string and return copy - removeCharFromString", "[string][remove]")
+TEST_CASE("String: remove character from string and return copy - removeChar", "[string][remove]")
 {
     SECTION("Remove 'a' in 'Bear' pattern")
     {
         const std::string pattern{"Bear"};
-        const auto result = toolbox::string::removeCharFromString(pattern, 'a');
+        const auto result = toolbox::string::removeChar(pattern, 'a');
 
         REQUIRE(pattern == "Bear");
         REQUIRE(result == "Ber");
@@ -40,7 +40,7 @@ TEST_CASE("String: remove character from string and return copy - removeCharFrom
     SECTION("Remove 'e' in 'beer' pattern")
     {
         const std::string pattern{"beer"};
-        const auto result = toolbox::string::removeCharFromString(pattern, 'e');
+        const auto result = toolbox::string::removeChar(pattern, 'e');
 
         REQUIRE(pattern == "beer");
         REQUIRE(result == "br");
@@ -49,7 +49,7 @@ TEST_CASE("String: remove character from string and return copy - removeCharFrom
     SECTION("Remove 'c' in 'CCCc' pattern")
     {
         const std::string pattern{"CCCc"};
-        const auto result = toolbox::string::removeCharFromString(pattern, 'c');
+        const auto result = toolbox::string::removeChar(pattern, 'c');
 
         REQUIRE(pattern == "CCCc");
         REQUIRE(result == "CCC");
@@ -58,7 +58,7 @@ TEST_CASE("String: remove character from string and return copy - removeCharFrom
     SECTION("Remove 'c' in 'cCCC' pattern")
     {
         const std::string pattern{"cCCC"};
-        const auto result = toolbox::string::removeCharFromString(pattern, 'c');
+        const auto result = toolbox::string::removeChar(pattern, 'c');
 
         REQUIRE(pattern == "cCCC");
         REQUIRE(result == "CCC");
@@ -67,7 +67,7 @@ TEST_CASE("String: remove character from string and return copy - removeCharFrom
     SECTION("Remove 'c' in 'cCCcCCc' pattern")
     {
         const std::string pattern{"cCCcCCc"};
-        const auto result = toolbox::string::removeCharFromString(pattern, 'c');
+        const auto result = toolbox::string::removeChar(pattern, 'c');
 
         REQUIRE(pattern == "cCCcCCc");
         REQUIRE(result == "CCCC");
@@ -76,7 +76,7 @@ TEST_CASE("String: remove character from string and return copy - removeCharFrom
     SECTION("Remove ' ' in 'cCCcCCc' pattern")
     {
         const std::string pattern{"cCCcCCc"};
-        const auto result = toolbox::string::removeCharFromString(pattern, ' ');
+        const auto result = toolbox::string::removeChar(pattern, ' ');
 
         REQUIRE(pattern == result);
     }
@@ -84,7 +84,7 @@ TEST_CASE("String: remove character from string and return copy - removeCharFrom
     SECTION("Remove ' ' in empty pattern")
     {
         const std::string pattern{""};
-        const auto result = toolbox::string::removeCharFromString(pattern, ' ');
+        const auto result = toolbox::string::removeChar(pattern, ' ');
 
         REQUIRE(pattern.empty());
         REQUIRE(result.empty());
@@ -93,19 +93,19 @@ TEST_CASE("String: remove character from string and return copy - removeCharFrom
     SECTION("Remove 'a' in 'aaa' pattern")
     {
         const std::string pattern{"aaa"};
-        const auto result = toolbox::string::removeCharFromString(pattern, 'a');
+        const auto result = toolbox::string::removeChar(pattern, 'a');
 
         REQUIRE(pattern == "aaa");
         REQUIRE(result.empty());
     }
 }
 
-TEST_CASE("String: remove character from string in place - removeCharFromStringInPlace", "[string][remove]")
+TEST_CASE("String: remove character from string in place - removeCharInPlace", "[string][remove]")
 {
     SECTION("Remove 'a' in 'Bear' pattern")
     {
         std::string pattern{"Bear"};
-        toolbox::string::removeCharFromStringInPlace(pattern, 'a');
+        toolbox::string::removeCharInPlace(pattern, 'a');
 
         REQUIRE(pattern == "Ber");
     }
@@ -113,7 +113,7 @@ TEST_CASE("String: remove character from string in place - removeCharFromStringI
     SECTION("Remove 'e' in 'beer' pattern")
     {
         std::string pattern{"beer"};
-        toolbox::string::removeCharFromStringInPlace(pattern, 'e');
+        toolbox::string::removeCharInPlace(pattern, 'e');
 
         REQUIRE(pattern == "br");
     }
@@ -121,7 +121,7 @@ TEST_CASE("String: remove character from string in place - removeCharFromStringI
     SECTION("Remove 'c' in 'CCCc' pattern")
     {
         std::string pattern{"CCCc"};
-        toolbox::string::removeCharFromStringInPlace(pattern, 'c');
+        toolbox::string::removeCharInPlace(pattern, 'c');
 
         REQUIRE(pattern == "CCC");
     }
@@ -129,7 +129,7 @@ TEST_CASE("String: remove character from string in place - removeCharFromStringI
     SECTION("Remove 'c' in 'cCCC' pattern")
     {
         std::string pattern{"cCCC"};
-        toolbox::string::removeCharFromStringInPlace(pattern, 'c');
+        toolbox::string::removeCharInPlace(pattern, 'c');
 
         REQUIRE(pattern == "CCC");
     }
@@ -137,7 +137,7 @@ TEST_CASE("String: remove character from string in place - removeCharFromStringI
     SECTION("Remove 'c' in 'cCCcCCc' pattern")
     {
         std::string pattern{"cCCcCCc"};
-        toolbox::string::removeCharFromStringInPlace(pattern, 'c');
+        toolbox::string::removeCharInPlace(pattern, 'c');
 
         REQUIRE(pattern == "CCCC");
     }
@@ -145,7 +145,7 @@ TEST_CASE("String: remove character from string in place - removeCharFromStringI
     SECTION("Remove ' ' in 'cCCcCCc' pattern")
     {
         std::string pattern{"cCCcCCc"};
-        toolbox::string::removeCharFromStringInPlace(pattern, ' ');
+        toolbox::string::removeCharInPlace(pattern, ' ');
 
         REQUIRE(pattern == "cCCcCCc");
     }
@@ -153,7 +153,7 @@ TEST_CASE("String: remove character from string in place - removeCharFromStringI
     SECTION("Remove ' ' in empty pattern")
     {
         std::string pattern{""};
-        toolbox::string::removeCharFromStringInPlace(pattern, ' ');
+        toolbox::string::removeCharInPlace(pattern, ' ');
 
         REQUIRE(pattern.empty());
     }
@@ -161,18 +161,18 @@ TEST_CASE("String: remove character from string in place - removeCharFromStringI
     SECTION("Remove 'a' in 'aaa' pattern")
     {
         std::string pattern{"aaa"};
-        toolbox::string::removeCharFromStringInPlace(pattern, 'a');
+        toolbox::string::removeCharInPlace(pattern, 'a');
 
         REQUIRE(pattern.empty());
     }
 }
 
-TEST_CASE("String: remove multiple characters from string and return copy", "[string][remove]")
+TEST_CASE("String: remove multiple characters from string and return copy - removeChars", "[string][remove]")
 {
     SECTION("Remove characters 'AB' from pattern 'ABC'")
     {
         std::string pattern{"ABC"};
-        auto result = toolbox::string::removeCharsFromString(pattern, "AB");
+        auto result = toolbox::string::removeChars(pattern, "AB");
 
         REQUIRE(pattern == "ABC");
         REQUIRE(result == "C");
@@ -181,7 +181,7 @@ TEST_CASE("String: remove multiple characters from string and return copy", "[st
     SECTION("Remove characters 'BA' from pattern 'ABC'")
     {
         std::string pattern{"ABC"};
-        auto result = toolbox::string::removeCharsFromString(pattern, "BA");
+        auto result = toolbox::string::removeChars(pattern, "BA");
 
         REQUIRE(pattern == "ABC");
         REQUIRE(result == "C");
@@ -190,7 +190,7 @@ TEST_CASE("String: remove multiple characters from string and return copy", "[st
     SECTION("Remove characters 'AB' from pattern 'abc'")
     {
         std::string pattern{"abc"};
-        auto result = toolbox::string::removeCharsFromString(pattern, "AB");
+        auto result = toolbox::string::removeChars(pattern, "AB");
 
         REQUIRE(pattern == "abc");
         REQUIRE(result == "abc");
@@ -199,7 +199,7 @@ TEST_CASE("String: remove multiple characters from string and return copy", "[st
     SECTION("Remove characters 'A' from pattern 'ABBA'")
     {
         std::string pattern{"ABBA"};
-        auto result = toolbox::string::removeCharsFromString(pattern, "A");
+        auto result = toolbox::string::removeChars(pattern, "A");
 
         REQUIRE(pattern == "ABBA");
         REQUIRE(result == "BB");
@@ -208,7 +208,7 @@ TEST_CASE("String: remove multiple characters from string and return copy", "[st
     SECTION("Remove characters 'A' from empty pattern")
     {
         std::string pattern{""};
-        auto result = toolbox::string::removeCharsFromString(pattern, "A");
+        auto result = toolbox::string::removeChars(pattern, "A");
 
         REQUIRE(pattern == "");
         REQUIRE(result == "");
@@ -217,7 +217,7 @@ TEST_CASE("String: remove multiple characters from string and return copy", "[st
     SECTION("Remove empty blacklist from pattern 'ABBA'")
     {
         std::string pattern{"ABBA"};
-        auto result = toolbox::string::removeCharsFromString(pattern, "");
+        auto result = toolbox::string::removeChars(pattern, "");
 
         REQUIRE(pattern == "ABBA");
         REQUIRE(result == "ABBA");
@@ -226,7 +226,7 @@ TEST_CASE("String: remove multiple characters from string and return copy", "[st
     SECTION("Remove empty blacklist from empty pattern")
     {
         std::string pattern{""};
-        auto result = toolbox::string::removeCharsFromString(pattern, "");
+        auto result = toolbox::string::removeChars(pattern, "");
 
         REQUIRE(pattern == "");
         REQUIRE(result == "");
@@ -235,7 +235,7 @@ TEST_CASE("String: remove multiple characters from string and return copy", "[st
     SECTION("Remove characters 'ABBA' from pattern 'A'")
     {
         std::string pattern{"A"};
-        auto result = toolbox::string::removeCharsFromString(pattern, "ABBA");
+        auto result = toolbox::string::removeChars(pattern, "ABBA");
 
         REQUIRE(pattern == "A");
         REQUIRE(result == "");
@@ -244,19 +244,19 @@ TEST_CASE("String: remove multiple characters from string and return copy", "[st
     SECTION("Remove characters 'ABBA' from pattern 'Ac'")
     {
         std::string pattern{"Ac"};
-        auto result = toolbox::string::removeCharsFromString(pattern, "ABBA");
+        auto result = toolbox::string::removeChars(pattern, "ABBA");
 
         REQUIRE(pattern == "Ac");
         REQUIRE(result == "c");
     }
 }
 
-TEST_CASE("String: remove multiple characters from string in place", "[string][remove]")
+TEST_CASE("String: remove multiple characters from string in place - removeCharsInPlace", "[string][remove]")
 {
     SECTION("Remove characters 'AB' from pattern 'ABC'")
     {
         std::string pattern{"ABC"};
-        toolbox::string::removeCharsFromStringInPlace(pattern, "AB");
+        toolbox::string::removeCharsInPlace(pattern, "AB");
 
         REQUIRE(pattern == "C");
     }
@@ -264,7 +264,7 @@ TEST_CASE("String: remove multiple characters from string in place", "[string][r
     SECTION("Remove characters 'BA' from pattern 'ABC'")
     {
         std::string pattern{"ABC"};
-        toolbox::string::removeCharsFromStringInPlace(pattern, "BA");
+        toolbox::string::removeCharsInPlace(pattern, "BA");
 
         REQUIRE(pattern == "C");
     }
@@ -272,7 +272,7 @@ TEST_CASE("String: remove multiple characters from string in place", "[string][r
     SECTION("Remove characters 'AB' from pattern 'abc'")
     {
         std::string pattern{"abc"};
-        toolbox::string::removeCharsFromStringInPlace(pattern, "AB");
+        toolbox::string::removeCharsInPlace(pattern, "AB");
 
         REQUIRE(pattern == "abc");
     }
@@ -280,7 +280,7 @@ TEST_CASE("String: remove multiple characters from string in place", "[string][r
     SECTION("Remove characters 'A' from pattern 'ABBA'")
     {
         std::string pattern{"ABBA"};
-        toolbox::string::removeCharsFromStringInPlace(pattern, "A");
+        toolbox::string::removeCharsInPlace(pattern, "A");
 
         REQUIRE(pattern == "BB");
     }
@@ -288,7 +288,7 @@ TEST_CASE("String: remove multiple characters from string in place", "[string][r
     SECTION("Remove characters 'A' from empty pattern")
     {
         std::string pattern{""};
-        toolbox::string::removeCharsFromStringInPlace(pattern, "A");
+        toolbox::string::removeCharsInPlace(pattern, "A");
 
         REQUIRE(pattern == "");
     }
@@ -296,7 +296,7 @@ TEST_CASE("String: remove multiple characters from string in place", "[string][r
     SECTION("Remove empty blacklist from pattern 'ABBA'")
     {
         std::string pattern{"ABBA"};
-        auto result = toolbox::string::removeCharsFromString(pattern, "");
+        auto result = toolbox::string::removeChars(pattern, "");
 
         REQUIRE(pattern == "ABBA");
         REQUIRE(result == "ABBA");
@@ -305,7 +305,7 @@ TEST_CASE("String: remove multiple characters from string in place", "[string][r
     SECTION("Remove empty blacklist from empty pattern")
     {
         std::string pattern{""};
-        toolbox::string::removeCharsFromStringInPlace(pattern, "");
+        toolbox::string::removeCharsInPlace(pattern, "");
 
         REQUIRE(pattern == "");
     }
@@ -313,7 +313,7 @@ TEST_CASE("String: remove multiple characters from string in place", "[string][r
     SECTION("Remove characters 'ABBA' from pattern 'A'")
     {
         std::string pattern{"A"};
-        toolbox::string::removeCharsFromStringInPlace(pattern, "ABBA");
+        toolbox::string::removeCharsInPlace(pattern, "ABBA");
 
         REQUIRE(pattern == "");
     }
@@ -321,7 +321,7 @@ TEST_CASE("String: remove multiple characters from string in place", "[string][r
     SECTION("Remove characters 'ABBA' from pattern 'Ac'")
     {
         std::string pattern{"Ac"};
-        toolbox::string::removeCharsFromStringInPlace(pattern, "ABBA");
+        toolbox::string::removeCharsInPlace(pattern, "ABBA");
 
         REQUIRE(pattern == "c");
     }

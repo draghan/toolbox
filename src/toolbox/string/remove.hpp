@@ -31,23 +31,38 @@
 
 namespace toolbox::string
 {
-    inline std::string removeCharsFromString(const std::string& source, const std::string& charactersToRemove)
+
+    /// Remove from the \p source string all occurrences of any character given in \p charactersToRemove.
+    /// \param source Source string to remove chars from. It won't be changed in any way.
+    /// \param charactersToRemove Blacklist in a form of a std::string_view, storing all characters which should be removed.
+    /// \return New std::string object based on \p source with removed all unwanted characters.
+    inline std::string removeChars(const std::string &source, std::string_view charactersToRemove)
     {
         return toolbox::container::removeElements(source, charactersToRemove);
     }
 
-    inline std::string removeCharFromString(const std::string& source, char characterToRemove)
+    /// In-place remove from the \p source string all occurrences of any character given in \p charactersToRemove.
+    /// \param source Source string to remove chars from. It will be modified if contains any char from \p charactersToRemove.
+    /// \param charactersToRemove Blacklist in a form of a std::string_view, storing all characters which should be removed.
+    inline void removeCharsInPlace(std::string &source, std::string_view charactersToRemove)
+    {
+        toolbox::container::removeElementsInPlace(source, charactersToRemove);
+    }
+
+    /// Remove from the \p source string all occurrences of the \p characterToRemove character.
+    /// \param source Source string to remove chars from. It won't be changed in any way.
+    /// \param characterToRemove Character which should be removed.
+    /// \return New std::string object based on \p source with removed all unwanted characters.
+    inline std::string removeChar(const std::string &source, char characterToRemove)
     {
         return toolbox::container::removeElement(source, characterToRemove);
     }
 
-    inline void removeCharFromStringInPlace(std::string &source, char characterToRemove)
+    /// In-place remove from the \p source string all occurrences of the \p characterToRemove character.
+    /// \param source Source string to remove chars from. It will be modified if contains the \p characterToRemove character.
+    /// \param characterToRemove Character which should be removed.
+    inline void removeCharInPlace(std::string &source, char characterToRemove)
     {
         toolbox::container::removeElementInPlace(source, characterToRemove);
-    }
-
-    inline void removeCharsFromStringInPlace(std::string &source, std::string_view charactersToRemove)
-    {
-        toolbox::container::removeElementsInPlace(source, charactersToRemove);
     }
 }

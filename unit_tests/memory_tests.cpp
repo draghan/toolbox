@@ -24,7 +24,7 @@
 
 #include "../external/Catch2/single_include/catch2/catch.hpp"
 
-#include <toolbox/memory/chopping.hpp>
+#include "../src/toolbox/memory/chopping.hpp"
 
 TEST_CASE("Memory: endianness", "[memory][endianness]")
 {
@@ -34,14 +34,14 @@ TEST_CASE("Memory: endianness", "[memory][endianness]")
     }
 }
 
-TEST_CASE("Memory: splicing, uint16_t -> uint8_t", "[memory][chopping][spliceBytes]")
+TEST_CASE("Memory: splicing, uint16_t -> uint8_t", "[memory][chopping][sliceToChunks]")
 {
     using big_t = uint16_t;
     using small_t = uint8_t;
     SECTION("0xDEAD pattern")
     {
         big_t test_value = 0xDEAD;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 2);
         REQUIRE(spliced[0] == 0xDE);
         REQUIRE(spliced[1] == 0xAD);
@@ -50,7 +50,7 @@ TEST_CASE("Memory: splicing, uint16_t -> uint8_t", "[memory][chopping][spliceByt
     SECTION("0 value")
     {
         big_t test_value = 0;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 2);
         REQUIRE(spliced[0] == 0x00);
         REQUIRE(spliced[1] == 0x00);
@@ -59,7 +59,7 @@ TEST_CASE("Memory: splicing, uint16_t -> uint8_t", "[memory][chopping][spliceByt
     SECTION("1 value")
     {
         big_t test_value = 1;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 2);
         REQUIRE(spliced[0] == 0x00);
         REQUIRE(spliced[1] == 1);
@@ -68,14 +68,14 @@ TEST_CASE("Memory: splicing, uint16_t -> uint8_t", "[memory][chopping][spliceByt
     SECTION("max value")
     {
         auto test_value = std::numeric_limits<big_t>::max();
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 2);
         REQUIRE(spliced[0] == std::numeric_limits<small_t>::max());
         REQUIRE(spliced[1] == std::numeric_limits<small_t>::max());
     }
 }
 
-TEST_CASE("Memory: splicing, uint32_t -> uint8_t", "[memory][chopping][spliceBytes]")
+TEST_CASE("Memory: splicing, uint32_t -> uint8_t", "[memory][chopping][sliceToChunks]")
 {
     using big_t = uint32_t;
     using small_t = uint8_t;
@@ -83,7 +83,7 @@ TEST_CASE("Memory: splicing, uint32_t -> uint8_t", "[memory][chopping][spliceByt
     SECTION("0xDEADBEEF pattern")
     {
         big_t test_value = 0xDEADBEEF;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 4);
         REQUIRE(spliced[0] == 0xDE);
         REQUIRE(spliced[1] == 0xAD);
@@ -94,7 +94,7 @@ TEST_CASE("Memory: splicing, uint32_t -> uint8_t", "[memory][chopping][spliceByt
     SECTION("0 value")
     {
         big_t test_value = 0;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 4);
         REQUIRE(spliced[0] == 0x00);
         REQUIRE(spliced[1] == 0x00);
@@ -105,7 +105,7 @@ TEST_CASE("Memory: splicing, uint32_t -> uint8_t", "[memory][chopping][spliceByt
     SECTION("1 value")
     {
         big_t test_value = 1;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 4);
         REQUIRE(spliced[0] == 0x00);
         REQUIRE(spliced[1] == 0x00);
@@ -116,7 +116,7 @@ TEST_CASE("Memory: splicing, uint32_t -> uint8_t", "[memory][chopping][spliceByt
     SECTION("max value")
     {
         auto test_value = std::numeric_limits<big_t>::max();
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 4);
         REQUIRE(spliced[0] == std::numeric_limits<small_t>::max());
         REQUIRE(spliced[1] == std::numeric_limits<small_t>::max());
@@ -125,7 +125,7 @@ TEST_CASE("Memory: splicing, uint32_t -> uint8_t", "[memory][chopping][spliceByt
     }
 }
 
-TEST_CASE("Memory: splicing, uint32_t -> uint16_t", "[memory][chopping][spliceBytes]")
+TEST_CASE("Memory: splicing, uint32_t -> uint16_t", "[memory][chopping][sliceToChunks]")
 {
     using big_t = uint32_t;
     using small_t = uint16_t;
@@ -133,7 +133,7 @@ TEST_CASE("Memory: splicing, uint32_t -> uint16_t", "[memory][chopping][spliceBy
     SECTION("0xDEADBEEF pattern")
     {
         big_t test_value = 0xDEADBEEF;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 2);
         REQUIRE(spliced[0] == 0xDEAD);
         REQUIRE(spliced[1] == 0xBEEF);
@@ -142,7 +142,7 @@ TEST_CASE("Memory: splicing, uint32_t -> uint16_t", "[memory][chopping][spliceBy
     SECTION("0 value")
     {
         big_t test_value = 0;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 2);
         REQUIRE(spliced[0] == 0x00);
         REQUIRE(spliced[1] == 0x00);
@@ -151,7 +151,7 @@ TEST_CASE("Memory: splicing, uint32_t -> uint16_t", "[memory][chopping][spliceBy
     SECTION("1 value")
     {
         big_t test_value = 1;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 2);
         REQUIRE(spliced[0] == 0x00);
         REQUIRE(spliced[1] == 1);
@@ -160,14 +160,14 @@ TEST_CASE("Memory: splicing, uint32_t -> uint16_t", "[memory][chopping][spliceBy
     SECTION("max value")
     {
         auto test_value = std::numeric_limits<big_t>::max();
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 2);
         REQUIRE(spliced[0] == std::numeric_limits<small_t>::max());
         REQUIRE(spliced[1] == std::numeric_limits<small_t>::max());
     }
 }
 
-TEST_CASE("Memory: splicing, uint64_t -> uint16_t", "[memory][chopping][spliceBytes]")
+TEST_CASE("Memory: splicing, uint64_t -> uint16_t", "[memory][chopping][sliceToChunks]")
 {
     using big_t = uint64_t;
     using small_t = uint16_t;
@@ -175,7 +175,7 @@ TEST_CASE("Memory: splicing, uint64_t -> uint16_t", "[memory][chopping][spliceBy
     SECTION("0xDeadBeefAbbaBabe pattern")
     {
         big_t test_value = 0xDeadBeefAbbaBabe;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 4);
         REQUIRE(spliced[0] == 0xDEAD);
         REQUIRE(spliced[1] == 0xBEEF);
@@ -186,7 +186,7 @@ TEST_CASE("Memory: splicing, uint64_t -> uint16_t", "[memory][chopping][spliceBy
     SECTION("0 value")
     {
         big_t test_value = 0;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 4);
         REQUIRE(spliced[0] == 0x00);
         REQUIRE(spliced[1] == 0x00);
@@ -197,7 +197,7 @@ TEST_CASE("Memory: splicing, uint64_t -> uint16_t", "[memory][chopping][spliceBy
     SECTION("1 value")
     {
         big_t test_value = 1;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 4);
         REQUIRE(spliced[0] == 0x00);
         REQUIRE(spliced[1] == 0x00);
@@ -208,7 +208,7 @@ TEST_CASE("Memory: splicing, uint64_t -> uint16_t", "[memory][chopping][spliceBy
     SECTION("max value")
     {
         auto test_value = std::numeric_limits<big_t>::max();
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 4);
         REQUIRE(spliced[0] == std::numeric_limits<small_t>::max());
         REQUIRE(spliced[1] == std::numeric_limits<small_t>::max());
@@ -217,7 +217,7 @@ TEST_CASE("Memory: splicing, uint64_t -> uint16_t", "[memory][chopping][spliceBy
     }
 }
 
-TEST_CASE("Memory: splicing, uint64_t -> uint8_t", "[memory][chopping][spliceBytes]")
+TEST_CASE("Memory: splicing, uint64_t -> uint8_t", "[memory][chopping][sliceToChunks]")
 {
     using big_t = uint64_t;
     using small_t = uint8_t;
@@ -225,7 +225,7 @@ TEST_CASE("Memory: splicing, uint64_t -> uint8_t", "[memory][chopping][spliceByt
     SECTION("0xDeadBeefAbbaBabe pattern")
     {
         big_t test_value = 0xDeadBeefAbbaBabe;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 8);
         REQUIRE(spliced[0] == 0xDE);
         REQUIRE(spliced[1] == 0xAD);
@@ -240,7 +240,7 @@ TEST_CASE("Memory: splicing, uint64_t -> uint8_t", "[memory][chopping][spliceByt
     SECTION("0 value")
     {
         big_t test_value = 0;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 8);
         REQUIRE(spliced[0] == 0x00);
         REQUIRE(spliced[1] == 0x00);
@@ -255,7 +255,7 @@ TEST_CASE("Memory: splicing, uint64_t -> uint8_t", "[memory][chopping][spliceByt
     SECTION("1 value")
     {
         big_t test_value = 1;
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 8);
         REQUIRE(spliced[0] == 0x00);
         REQUIRE(spliced[1] == 0x00);
@@ -270,7 +270,7 @@ TEST_CASE("Memory: splicing, uint64_t -> uint8_t", "[memory][chopping][spliceByt
     SECTION("max value")
     {
         auto test_value = std::numeric_limits<big_t>::max();
-        const auto spliced = toolbox::memory::sliceBytes<small_t>(test_value);
+        const auto spliced = toolbox::memory::sliceToChunks<small_t>(test_value);
         REQUIRE(spliced.size() == 8);
         REQUIRE(spliced[0] == std::numeric_limits<small_t>::max());
         REQUIRE(spliced[1] == std::numeric_limits<small_t>::max());

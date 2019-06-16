@@ -34,13 +34,21 @@
 
 namespace toolbox::memory
 {
+
+    /// Slices bit form of an integer value to the array of smaller chunks.
+    /// \example Slicing \p 0xBEEF value of \p uint16_t to \p uint8_t array will give us 2 elements array with values {0xBE, 0xEF}.
+    /// \tparam SmallerType A destination type of array's element (type of divided chunk)..
+    /// \tparam BiggerType Source type to be divided.
+    /// \tparam slices_count Automatically calculated size of the result array.
+    /// \param value Value to be sliced.
+    /// \return Array of the sliced \p value.
     template
             <
                     typename SmallerType,
                     typename BiggerType,
                     size_t slices_count = std::numeric_limits<BiggerType>::digits / std::numeric_limits<SmallerType>::digits
             >
-    constexpr std::array<SmallerType, slices_count> sliceBytes(BiggerType value)
+    constexpr std::array<SmallerType, slices_count> sliceToChunks(BiggerType value)
     {
         // initial assumptions:
         static_assert(slices_count > 1, "BiggerType should be wider than 'SmallerType'.");

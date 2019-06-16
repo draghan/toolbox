@@ -3,9 +3,6 @@ project(toolbox)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(src)
-include_directories(src/memory)
-
 set(SOURCES_TESTS
         unit_tests/tests_main.cpp
         unit_tests/memory_tests.cpp

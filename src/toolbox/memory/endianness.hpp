@@ -24,13 +24,13 @@
 
 #pragma once
 
-
 #include <cstdint>
 #include <limits>
 #include <cstddef>
 
 namespace toolbox::memory
 {
+    /// Type representing endianness (byte order) of the processor.
     enum class endianness_t
     {
         unknown,
@@ -38,6 +38,9 @@ namespace toolbox::memory
         little
     };
 
+    /// Function which recognize current machine byte order by doing some bit shifting operations.
+    /// \remark Could be use in a constexpr context.
+    /// \return Byte order of the current CPU.
     constexpr endianness_t get_endianness()
     {
         // write tested value to the memory:
@@ -58,13 +61,16 @@ namespace toolbox::memory
         }
     }
 
+    /// Function which recognize current machine byte order by reading chunks of memory.
+    /// \remark Couldn't be use in a constexpr context.
+    /// \return Byte order of the current CPU.
     inline endianness_t test_endianness()
     {
         // initial assumptions:
         static_assert(std::numeric_limits<uint8_t>::digits == 8);
         static_assert(std::numeric_limits<uint16_t>::digits == 16);
         static_assert(std::numeric_limits<uint8_t>::is_signed == false);
-        static_assert(std::numeric_limits<uint32_t>::is_signed == false);
+        static_assert(std::numeric_limits<uint16_t>::is_signed == false);
 
         // write tested value to the memory:
         const uint16_t pattern = 0xBEEF;
@@ -74,12 +80,12 @@ namespace toolbox::memory
 
         if (*first_byte == 0xBE)
         {
-            // if first byte looks like 0xFF, than we have BIG ENDIAN CPU
+            // if first byte looks like 0xBE, than we have BIG ENDIAN CPU
             return endianness_t::big;
         }
         else if (*first_byte == 0xEF)
         {
-            // if first byte looks like 0x00, than we have LITTLE ENDIAN CPU (most of the modern platforms have little endian; at least all of x86, x64)
+            // if first byte looks like 0xEF, than we have LITTLE ENDIAN CPU (most of the modern platforms have little endian; at least all of x86, x64)
             return endianness_t::little;
         }
         else

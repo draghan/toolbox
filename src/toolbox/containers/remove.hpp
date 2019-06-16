@@ -30,6 +30,12 @@
 namespace toolbox::container
 {
 
+    /// Remove from the \p source container all occurrences of any elements given in \p elementsToRemove.
+    /// \tparam SourceContainer Some container type, should provide cbegin(), cend(), compatibility with std::back_inserter.
+    /// \tparam BlacklistContainer Some container type, should provide cbegin(), cend().
+    /// \param source Source container to remove elements from. It won't be changed in any way.
+    /// \param elementsToRemove Blacklist in a form of a \p BlacklistContainer, storing all elements which should be removed.
+    /// \return New \p SourceContainer object based on \p source with removed all unwanted elements.
     template <class SourceContainer, class BlacklistContainer>
     constexpr SourceContainer removeElements(const SourceContainer& source, const BlacklistContainer& elementsToRemove)
     {
@@ -42,8 +48,14 @@ namespace toolbox::container
         return wantedElements;
     }
 
-    template <class SourceContainer>
-    constexpr SourceContainer removeElement(const SourceContainer& source, const typename SourceContainer::value_type & elementToRemove)
+    /// Remove from the \p source container all occurrences of the element given in \p elementToRemove.
+    /// \tparam SourceContainer Some container type, should provide cbegin(), cend(), compatibility with std::back_inserter.
+    /// \tparam Element An element type, should be compatible with elements in container and provides != operator.
+    /// \param source Source container to remove elements from. It won't be changed in any way.
+    /// \param elementToRemove An element which should be removed.
+    /// \return New \p SourceContainer object based on \p source with removed all unwanted elements.
+    template <class SourceContainer, class Element>
+    constexpr SourceContainer removeElement(const SourceContainer& source, const Element& elementToRemove)
     {
         SourceContainer wantedElements;
         std::copy_if(source.cbegin(), source.cend(), std::back_inserter(wantedElements), [&elementToRemove](
@@ -54,12 +66,22 @@ namespace toolbox::container
         return wantedElements;
     }
 
-    template <class SourceContainer>
-    constexpr void removeElementInPlace(SourceContainer& source, const typename SourceContainer::value_type & elementToRemove)
+    /// Remove in-place from the \p source container all occurrences of the element given in \p elementToRemove.
+    /// \tparam SourceContainer Some container type, should provide begin(), end().
+    /// \tparam Element An element type, should be compatible with elements in container and provides == operator.
+    /// \param source Source container to remove elements from. It will be modified if contains the \p elementToRemove.
+    /// \param elementToRemove An element which should be removed.
+    template <class SourceContainer, class Element>
+    constexpr void removeElementInPlace(SourceContainer& source, const Element& elementToRemove)
     {
         source.erase(std::remove(source.begin(), source.end(), elementToRemove), source.end());
     }
 
+    /// Remove in-place from the \p source container all occurrences of of any elements given in \p elementsToRemove.
+    /// \tparam SourceContainer Some container type, should provide begin(), end().
+    /// \tparam BlacklistContainer Some container type, should provide cbegin(), cend().
+    /// \param source Source container to remove elements from. It will be modified if contains any the \p elementsToRemove.
+    /// \param elementsToRemove Blacklist in a form of a \p BlacklistContainer, storing all elements which should be removed.
     template <class SourceContainer, class BlacklistContainer>
     constexpr void removeElementsInPlace(SourceContainer& source, const BlacklistContainer& elementsToRemove)
     {
