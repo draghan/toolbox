@@ -26,6 +26,7 @@
 
 #include <string>
 #include <algorithm>
+#include <vector>
 
 namespace toolbox::container
 {
@@ -91,5 +92,4 @@ namespace toolbox::container
                                         return std::find(elementsToRemove.cbegin(), elementsToRemove.cend(), currentElement) != elementsToRemove.cend();
                                     }), source.end());
     }
-
 }

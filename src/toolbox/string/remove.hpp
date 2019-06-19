@@ -25,13 +25,13 @@
 #pragma once
 
 #include "../containers/remove.hpp"
+#include "./query.hpp"
 
 #include <string>
 #include <string_view>
 
 namespace toolbox::string
 {
-
     /// Remove from the \p source string all occurrences of any character given in \p charactersToRemove.
     /// \param source Source string to remove chars from. It won't be changed in any way.
     /// \param charactersToRemove Blacklist in a form of a std::string_view, storing all characters which should be removed.
@@ -64,5 +64,85 @@ namespace toolbox::string
     inline void removeCharInPlace(std::string &source, char characterToRemove)
     {
         toolbox::container::removeElementInPlace(source, characterToRemove);
+    }
+
+    /// Trim requested \p charsToTrim from the beginning of the \p source string and returns string after trim.
+    /// \param source String to be trimmed. Won't be modified.
+    /// \param charsToTrim List of characters to be removed.
+    /// \return New string object after trim.
+    inline std::string trimAtBegin(const std::string& source, const std::string& charsToTrim = "\t ")
+    {
+        if(source.empty() || charsToTrim.empty())
+        {
+            return source;
+        }
+
+        auto found = source.find_first_not_of(charsToTrim);
+        return source.substr(found);
+    }
+
+    /// Trim requested \p charsToTrim from the end of the \p source string and returns string after trim.
+    /// \param source String to be trimmed. Won't be modified.
+    /// \param charsToTrim List of characters to be removed.
+    /// \return New string object after trim.
+    inline std::string trimAtEnd(const std::string& source, const std::string& charsToTrim = "\t ")
+    {
+        if(source.empty() || charsToTrim.empty())
+        {
+            return source;
+        }
+
+        auto found = source.find_last_not_of(charsToTrim);
+        return source.substr(0, found + 1);
+    }
+
+    /// Trim requested \p charsToTrim from the beginning and the end of the \p source string and returns string after trim.
+    /// \param source String to be trimmed. Won't be modified.
+    /// \param charsToTrim List of characters to be removed.
+    /// \return New string object after trim.
+    inline std::string trim(const std::string& source, const std::string& charsToTrim = "\t ")
+    {
+        return trimAtBegin(trimAtEnd(source, charsToTrim), charsToTrim);
+    }
+
+    /// Trim requested \p charsToTrim from the beginning of the \p source string in place.
+    /// \param source String to be trimmed. Will be modified.
+    /// \param charsToTrim List of characters to be removed.
+    inline void trimAtBeginInPlace(std::string& source, const std::string& charsToTrim = "\t ")
+    {
+        if(source.empty() || charsToTrim.empty())
+        {
+            return;
+        }
+
+        source.erase(source.begin(), std::find_if(source.begin(), source.end(), [&charsToTrim](const auto& currentChar)
+        {
+            return !contains(charsToTrim, currentChar);
+        }));
+    }
+
+    /// Trim requested \p charsToTrim from the end of the \p source string in place.
+    /// \param source String to be trimmed. Will be modified.
+    /// \param charsToTrim List of characters to be removed.
+    inline void trimAtEndInPlace(std::string& source, const std::string& charsToTrim = "\t ")
+    {
+        if(source.empty() || charsToTrim.empty())
+        {
+            return;
+        }
+
+        source.erase(std::find_if(source.rbegin(), source.rend(), [&charsToTrim](const auto& currentChar)
+        {
+            return !contains(charsToTrim, currentChar);
+        }).base(), source.end());
+    }
+
+    /// Trim requested \p charsToTrim from the beginning and the end of the \p source string in place.
+    /// \param source String to be trimmed. Will be modified.
+    /// \param charsToTrim List of characters to be removed.
+    inline void trimInPlace(std::string& source, const std::string& charsToTrim = "\t ")
+    {
+        trimAtBeginInPlace(source, charsToTrim);
+        trimAtEndInPlace(source, charsToTrim);
     }
 }
